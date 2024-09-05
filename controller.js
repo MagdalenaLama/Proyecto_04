@@ -22,9 +22,47 @@ exports.obtenerReservas = (req, res) => {
     data: reservas,
   });
 };
-exports.infoReserva = (req, res) => {};
-exports.actualizarReserva = (req, res) => {};
-exports.eliminarReserva = (req, res) => {};
+exports.infoReserva = (req, res) => {
+  let id = parseInt(req.params.id);
+  let reserva = reservas.find((reserv) => reserv.id === id);
+  if (!reserva) {
+    res
+      .status(404)
+      .json({ msg: `No se encuentra ninguna reserva bajo el id: ${id}` });
+  } else {
+    res.json({ msg: "Datos de su reserva:", info: reserva });
+  }
+};
+
+exports.actualizarReserva = (req, res) => {
+  let id = parseInt(req.params.id);
+  let infoActualizada = req.body;
+  let reserva = reservas.find((reserv) => reserv.id === id);
+  if (reserva) {
+    infoActualizada.id = Date.now();
+    reservas.push(infoActualizada);
+    res.json({
+      msg: `Reserva actualizada con éxito bajo el numero de reserva de:${infoActualizada.id} `,
+      data: infoActualizada,
+    });
+  } else {
+    res
+      .status(404)
+      .json({ msg: `No se encuentra ninguna reserva bajo el id: ${id}` });
+  }
+};
+exports.eliminarReserva = (req, res) => {
+  let id = parseInt(req.params.id);
+  let index = reservas.findIndex((reser) => reser.id === id);
+  if (index === -1) {
+    res
+      .status(404)
+      .json({ msg: `No se encuentra ninguna reserva bajo el id: ${id}` });
+  } else {
+    reservas.splice(index, 1);
+    res.json({ msg: "Reserva eliminada con éxito" });
+  }
+};
 exports.filtrarReservaPorId = (req, res) => {};
 exports.filtrarReservaPorFecha = (req, res) => {};
 exports.filtrarReservaPorTipoHabitacion = (req, res) => {};
