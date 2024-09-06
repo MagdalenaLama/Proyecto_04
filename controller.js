@@ -2,11 +2,11 @@ let reservas = [
   {
     id: "",
     hotel: "Sol",
-    fechaInicio: "2024-09-18",
-    fechaFin: "2024-09-20",
-    tipoHabitacion: "Doble",
+    fecha_inicio: "2024-09-18",
+    fecha_fin: "2024-09-20",
+    tipo_habitacion: "Doble",
     estado: "El estado de la reserva es confirmada",
-    numHuespedes: 2,
+    num_huespedes: 2,
   },
 ];
 
@@ -17,9 +17,44 @@ exports.crearReserva = (req, res) => {
   res.json({ msg: "reserva creada con éxito", data: nuevaReserva });
 };
 exports.obtenerReservas = (req, res) => {
+  let {
+    hotel,
+    fecha_inicio,
+    fecha_fin,
+    tipo_habitacion,
+    estado,
+    num_huespedes,
+  } = req.query;
+  console.log(req.query);
+
+  let reservasFiltradas = reservas.filter((reser) => {
+    if (hotel && reser.hotel !== hotel) {
+      return false;
+    }
+    if (fecha_inicio && reser.fecha_inicio !== fecha_inicio) {
+      return false;
+    }
+    if (fecha_fin && reser.fecha_fin !== fecha_fin) {
+      return false;
+    }
+    if (tipo_habitacion && reser.tipo_habitacion !== tipo_habitacion) {
+      return false;
+    }
+    if (estado && reser.estado !== estado) {
+      return false;
+    }
+    if (num_huespedes && reser.num_huespedes !== parseInt(num_huespedes)) {
+      return false;
+    }
+    return true;
+  });
+  if (reservasFiltradas.length === 0) {
+    return res.status(404).json({ msg: "Reserva no encontrada" });
+  }
+
   res.json({
     msg: "Reservas obtenidas con éxito.",
-    data: reservas,
+    data: reservasFiltradas,
   });
 };
 exports.infoReserva = (req, res) => {
@@ -63,8 +98,3 @@ exports.eliminarReserva = (req, res) => {
     res.json({ msg: "Reserva eliminada con éxito" });
   }
 };
-exports.filtrarReservaPorId = (req, res) => {};
-exports.filtrarReservaPorFecha = (req, res) => {};
-exports.filtrarReservaPorTipoHabitacion = (req, res) => {};
-exports.filtrarReservaPorEstado = (req, res) => {};
-exports.filtrarReservaPorNumHuespedes = (req, res) => {};
