@@ -1,6 +1,6 @@
 let reservas = [
   {
-    id: "",
+    id: "0000",
     hotel: "Sol",
     fecha_inicio: "2024-09-18",
     fecha_fin: "2024-09-20",
@@ -11,8 +11,7 @@ let reservas = [
 ];
 
 exports.crearReserva = (req, res) => {
-  let nuevaReserva = req.body;
-  nuevaReserva.id = Date.now();
+  let nuevaReserva = { id: Date.now(), ...req.body };
   reservas.push(nuevaReserva);
   res.json({ msg: "reserva creada con éxito", data: nuevaReserva });
 };
@@ -25,11 +24,35 @@ exports.obtenerReservas = (req, res) => {
     estado,
     num_huespedes,
   } = req.query;
-  console.log(req.query);
 
   let reservasFiltradas = reservas.filter((reser) => {
-    if (hotel && reser.hotel !== hotel) {
+    if (hotel && reser.hotel.toLowerCase() !== hotel.toLowerCase()) {
       return false;
+    }
+
+    if (
+      tipo_habitacion &&
+      reser.tipo_habitacion.toLowerCase() !== tipo_habitacion.toLowerCase()
+    ) {
+      return false;
+    }
+    if (estado && reser.estado.toLowerCase() !== estado.toLowerCase()) {
+      return false;
+    }
+    if (num_huespedes && reser.num_huespedes !== parseInt(num_huespedes)) {
+      return false;
+    }
+    if (fecha_inicio && fecha_fin) {
+      // Convertir las cadenas de fecha a objetos Date
+      const fechaInicioRango = new Date(fecha_inicio);
+      const fechaFinRango = new Date(fecha_fin);
+      const fechaInicioReserva = new Date(reser.fecha_inicio);
+      const fechaFinReserva = new Date(reser.fecha_fin);
+
+      return (
+        fechaInicioRango <= fechaFinReserva &&
+        fechaFinRango >= fechaInicioReserva
+      );
     }
     if (fecha_inicio && reser.fecha_inicio !== fecha_inicio) {
       return false;
@@ -37,15 +60,7 @@ exports.obtenerReservas = (req, res) => {
     if (fecha_fin && reser.fecha_fin !== fecha_fin) {
       return false;
     }
-    if (tipo_habitacion && reser.tipo_habitacion !== tipo_habitacion) {
-      return false;
-    }
-    if (estado && reser.estado !== estado) {
-      return false;
-    }
-    if (num_huespedes && reser.num_huespedes !== parseInt(num_huespedes)) {
-      return false;
-    }
+
     return true;
   });
   if (reservasFiltradas.length === 0) {
