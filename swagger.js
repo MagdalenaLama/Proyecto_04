@@ -6,7 +6,7 @@ const swaggerDefinition = {
   info: {
     title: "Hotel Booking - API-Docs",
     version: "1.0.0",
-    description: "Documentation using Swagger",
+    description: "Documentacion mediante Swagger",
   },
   server: [
     {
@@ -14,10 +14,14 @@ const swaggerDefinition = {
       description: "Local server",
     },
   ],
+};
+
+const options = {
+  swaggerDefinition,
   apis: ["./routes/*.js"],
 };
 
-const swaggerSpec = swaggerJSDoc(swaggerDefinition);
+const swaggerSpec = swaggerJSDoc(options);
 
 module.exports = (app) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -11,9 +11,32 @@ let reservas = [
 ];
 
 exports.crearReserva = (req, res) => {
-  let nuevaReserva = { id: Date.now(), ...req.body };
-  reservas.push(nuevaReserva);
-  res.json({ msg: "reserva creada con éxito", data: nuevaReserva });
+  const {
+    hotel,
+    fecha_inicio,
+    fecha_fin,
+    tipo_habitacion,
+    estado,
+    num_huespedes,
+  } = req.body;
+
+  if (
+    !hotel ||
+    !fecha_inicio ||
+    !fecha_fin ||
+    !tipo_habitacion ||
+    !tipo_habitacion ||
+    !estado ||
+    !num_huespedes
+  ) {
+    res
+      .status(404)
+      .json({ msg: "Debe ingresar todos los datos de la reserva" });
+  } else {
+    let nuevaReserva = { id: Date.now(), ...req.body };
+    reservas.push(nuevaReserva);
+    res.json({ msg: "reserva creada con éxito", data: nuevaReserva });
+  }
 };
 exports.obtenerReservas = (req, res) => {
   let {
