@@ -1,8 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const controlers = require("../controller.js");
+const controlers = require("../controller/controller.js");
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Reserva:
+ *      type: array
+ *      items:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *            example: 1
+ *          hotel:
+ *            type: string
+ *            example: Hyatt
+ *          fecha_inicio:
+ *            type: string
+ *            example: "2024-09-18"
+ *          fecha_fin:
+ *            type: string
+ *            example: "2024-09-20"
+ *          tipo_habitacion:
+ *            type: string
+ *            example: "Doble"
+ *          estado:
+ *            type: string
+ *            example: "pendiente"
+ *          num_huespedes:
+ *            type: integer
+ *            example: 2
+ */
 
 // Create
+
 router.post("/reservas", controlers.crearReserva);
 /**
  * @swagger
