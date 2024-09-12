@@ -1,6 +1,6 @@
 let reservas = [
   {
-    id: "0000",
+    id: 1,
     hotel: "Sol",
     fecha_inicio: "2024-09-18",
     fecha_fin: "2024-09-20",
@@ -35,7 +35,9 @@ exports.crearReserva = (req, res) => {
   } else {
     let nuevaReserva = { id: Date.now(), ...req.body };
     reservas.push(nuevaReserva);
-    res.json({ msg: "reserva creada con éxito", data: nuevaReserva });
+    res
+      .status(200)
+      .json({ msg: "reserva creada con éxito", data: nuevaReserva });
   }
 };
 exports.obtenerReservas = (req, res) => {
@@ -103,7 +105,7 @@ exports.infoReserva = (req, res) => {
       .status(404)
       .json({ msg: `No se encuentra ninguna reserva bajo el id: ${id}` });
   } else {
-    res.json({ msg: "Datos de su reserva:", info: reserva });
+    res.status(200).json({ msg: "Datos de su reserva:", info: reserva });
   }
 };
 
@@ -112,10 +114,9 @@ exports.actualizarReserva = (req, res) => {
   let infoActualizada = req.body;
   let reserva = reservas.find((reserv) => reserv.id === id);
   if (reserva) {
-    infoActualizada.id = Date.now();
     reservas.push(infoActualizada);
-    res.json({
-      msg: `Reserva actualizada con éxito bajo el numero de reserva de:${infoActualizada.id} `,
+    res.status(200).json({
+      msg: `Reserva actualizada con éxito bajo el número de reserva de:${id} `,
       data: infoActualizada,
     });
   } else {
