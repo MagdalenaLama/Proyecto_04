@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 3000;
 const router = require("./routes/addBooking");
+
+require("dotenv").config();
+const port = process.env.PORT || 3005;
 const swaggerSetup = require("./swagger");
 app.use(express.json());
 

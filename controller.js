@@ -31,7 +31,7 @@ exports.crearReserva = (req, res) => {
   ) {
     res
       .status(404)
-      .json({ msg: "Debe ingresar todos los datos de la reserva" });
+      .json({ msg: "Debe ingresar todos  los datos de la reserva" });
   } else {
     let nuevaReserva = { id: Date.now(), ...req.body };
     reservas.push(nuevaReserva);
