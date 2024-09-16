@@ -111,18 +111,18 @@ exports.infoReserva = (req, res) => {
 
 exports.actualizarReserva = (req, res) => {
   let id = parseInt(req.params.id);
-  let infoActualizada = req.body;
-  let reserva = reservas.find((reserv) => reserv.id === id);
-  if (reserva) {
-    reservas.push(infoActualizada);
-    res.status(200).json({
-      msg: `Reserva actualizada con éxito bajo el número de reserva de:${id} `,
-      data: infoActualizada,
-    });
-  } else {
-    res
+
+  let indexReserva = reservas.findIndex((reserv) => reserv.id === id);
+  if (indexReserva === -1) {
+    return res
       .status(404)
       .json({ msg: `No se encuentra ninguna reserva bajo el id: ${id}` });
+  } else {
+    reservas[indexReserva] = { ...reservas[indexReserva], ...req.body };
+    res.status(200).json({
+      msg: `Reserva actualizada con éxito bajo el número de reserva de:${id} `,
+      data: reservas[indexReserva],
+    });
   }
 };
 exports.eliminarReserva = (req, res) => {
