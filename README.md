@@ -17,7 +17,7 @@ El objetivo principal es permitir a los usuarios realizar y gestionar reservas d
 ## Estructura del Proyecto
 
 - Se crea un servidor con **Node.js** y **Express**.
-- Se establece un archivo `.en` para las variables de entorno que para el ejerciocio es el puerto en 3000.
+- Se establece un archivo `.env` para las variables de entorno que para el ejerciocio es el puerto en 3000.
 - Se crea un archivo `.gitignore` donde se incluyena la carpeta `node_modules` más los archivos `package-lock.json` y `.env`
 - Se establece arquitectura de carpetas de forma que la asignación de responsabilidades del código pueda ser ubicado fácilmente:
 
